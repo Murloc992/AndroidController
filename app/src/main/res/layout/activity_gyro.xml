@@ -8,15 +8,16 @@
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/space"
-        android:layout_alignStart="@+id/space"
-        android:layout_alignRight="@+id/space2"
-        android:layout_alignEnd="@+id/space2"
-        android:max="100"
+        android:id="@+id/seekBarHeight"
+        android:max="10"
         android:indeterminate="false"
-        android:progress="0" />
+        android:progress="5"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="47dp"
+        android:mirrorForRtl="false"
+        android:layout_toRightOf="@+id/space"
+        android:layout_alignRight="@+id/space2"
+        android:layout_alignEnd="@+id/space2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +25,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Aukštis"
         android:id="@+id/textView"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="22dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <Space
@@ -47,37 +49,45 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Apsiversti"
+        android:text="Kartoti"
         android:id="@+id/buttonFlip"
-        android:layout_marginTop="33dp"
-        android:layout_below="@+id/seekBar"
-        android:layout_alignLeft="@+id/seekBar"
-        android:layout_alignStart="@+id/seekBar" />
+        android:layout_below="@+id/buttonExit"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:layout_alignStart="@+id/buttonExit" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Baigti"
         android:id="@+id/buttonExit"
-        android:layout_alignTop="@+id/buttonFlip"
-        android:layout_alignRight="@+id/seekBar"
-        android:layout_alignEnd="@+id/seekBar" />
+        android:layout_below="@+id/space3"
+        android:layout_toRightOf="@+id/space3" />
 
-    <Button
+    <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kairė"
-        android:id="@+id/buttonKaire"
-        android:layout_alignBottom="@+id/seekBar"
+        android:id="@+id/seekBarRot"
+        android:max="10"
+        android:indeterminate="false"
+        android:progress="5"
+        android:rotation="270"
+        android:layout_alignBottom="@+id/space4"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/textView" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:id="@+id/space3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dešinė"
-        android:id="@+id/buttonDesine"
-        android:layout_alignBottom="@+id/seekBar"
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:id="@+id/space4"
+        android:layout_alignTop="@+id/space2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -85,20 +95,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="X"
+        android:text="Kryptis"
         android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/space"
-        android:layout_alignStart="@+id/space"
-        android:layout_marginTop="58dp" />
+        android:layout_marginRight="25dp"
+        android:layout_alignBottom="@+id/seekBarRot"
+        android:layout_toLeftOf="@+id/space4" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Y"
-        android:id="@+id/textView3"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignRight="@+id/space2"
-        android:layout_alignEnd="@+id/space2" />
 </RelativeLayout>

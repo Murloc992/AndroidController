@@ -24,13 +24,15 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-
 public class MainActivity extends Activity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener,SensorEventListener {
 
     private Socket socket;
 
     private static final int SERVERPORT = 13337;
     private static String SERVER_IP = "78.60.11.34";
+    private static final float alpha=0.1f;
+
+    protected float accelVals[];
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -41,7 +43,8 @@ public class MainActivity extends Activity implements View.OnClickListener,SeekB
         PACKET_DATA(0x1),
         PACKET_DISCONNECT(0x2),
         PACKET_ACCELEROMETER(0x3),
-        PACKET_HEIGHT_CHANGE(0x4);
+        PACKET_HEIGHT_CHANGE(0x4),
+        PACKET_ROT_CHANGE(0x5);
 
         private int value;
 
@@ -146,13 +149,16 @@ public class MainActivity extends Activity implements View.OnClickListener,SeekB
                     public void run()
                     {
                         setContentView(R.layout.activity_gyro);
-                        SeekBar sb=(SeekBar) findViewById(R.id.seekBar);
+                        SeekBar sb=(SeekBar) findViewById(R.id.seekBarHeight);
+                        sb.setOnSeekBarChangeListener(activity);
+
+                        sb=(SeekBar) findViewById(R.id.seekBarRot);
                         sb.setOnSeekBarChangeListener(activity);
 
                         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
                         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-                        mSensorManager.registerListener(activity, mSensor, 1000000);
+                        mSensorManager.registerListener(activity, mSensor, 10000);
                     }
                 });
             }catch(Exception e){e.printStackTrace();}
@@ -201,7 +207,15 @@ public class MainActivity extends Activity implements View.OnClickListener,SeekB
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        new Packet(packet_type.PACKET_HEIGHT_CHANGE).appendData(seekBar.getProgress()).send(socket);
+        if(seekBar.getProgress()!=5) {
+            int tosend=seekBar.getProgress()>5?1:-1;
+            if (seekBar.getId() == R.id.seekBarHeight) {
+                new Packet(packet_type.PACKET_HEIGHT_CHANGE).appendData(tosend).send(socket);
+            } else {
+                new Packet(packet_type.PACKET_ROT_CHANGE).appendData(tosend).send(socket);
+            }
+            seekBar.setProgress(5);
+        }
     }
 
     @Override
@@ -223,7 +237,19 @@ public class MainActivity extends Activity implements View.OnClickListener,SeekB
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onSensorChanged(SensorEvent event) {
-            new Packet(packet_type.PACKET_ACCELEROMETER).appendData(event.values[0]).appendData(event.values[1]).appendData(event.values[2]).send(socket);
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+            accelVals = lowPass( event.values, accelVals );
+
+            new Packet(packet_type.PACKET_ACCELEROMETER).appendData(accelVals[0]).appendData(accelVals[1]).appendData(accelVals[2]).send(socket);
+    }
+
+    protected float[] lowPass( float[] input, float[] output ) {
+        if ( output == null ) return input;
+
+        for ( int i=0; i<input.length; i++ ) {
+            output[i] = output[i] + alpha * (input[i] - output[i]);
+        }
+        return output;
     }
 
     @Override

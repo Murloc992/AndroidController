@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidController.iml" filepath="$PROJECT_DIR$/AndroidController.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DoItSocketStyle.iml" filepath="$PROJECT_DIR$/DoItSocketStyle.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
